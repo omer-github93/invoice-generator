@@ -23,6 +23,7 @@ ehthumbs.db
 Thumbs.db
 
 # Project specific
+GITHUB_SETUP.md
 README.md.backup
 *.backup
 
