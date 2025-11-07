@@ -481,7 +481,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Authors
 
-- **Your Name** - *Initial work* - [YourGitHub](https://github.com/your-username)
+- **Omer Tariq** - *Initial work* - [GitHub](https://github.com/omer-github93/)
 
 ## 🙏 Acknowledgments
 
@@ -491,7 +491,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-For support, email your-email@example.com or open an issue in the repository.
+For support, email omer.hamajan@gmail.com or open an issue in the repository.
 
 ---
 
