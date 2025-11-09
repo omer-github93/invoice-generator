@@ -5,17 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Company extends Model
+class Client extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
-        'name', 'logo_path', 'address', 'created_by',
+        'name',
+        'email',
+        'phone',
+        'created_by',
     ];
 
-    public function clients()
+    public function companies()
     {
-        return $this->belongsToMany(Client::class, 'client_company')
+        return $this->belongsToMany(Company::class, 'client_company')
             ->withTimestamps();
     }
 
@@ -24,3 +27,4 @@ class Company extends Model
         return $this->belongsTo(User::class, 'created_by');
     }
 }
+

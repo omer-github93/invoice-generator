@@ -18,11 +18,10 @@ return new class extends Migration
             $table->string('invoice_number')->unique();
             $table->date('date');
             $table->date('due_date')->nullable();
-            $table->string('payment_terms')->nullable();
+            $table->enum('payment_terms', ['cash','credit card','bank transfer'])->default('cash');
             $table->enum('status', ['draft','unpaid','partially_paid','paid','overdue','cancelled'])->default('draft');
             $table->decimal('subtotal',15,2)->default(0);  // total of the invoice before tax and discount
             $table->decimal('tax_amount',15,2)->default(0); // tax amount of the invoice
-            $table->decimal('discount_amount',15,2)->default(0); // discount amount of the invoice
             $table->decimal('total',15,2)->default(0); // total amount of the invoice
             $table->decimal('balance_due',15,2)->default(0); // remaining amount to be paid
             $table->text('note')->nullable();

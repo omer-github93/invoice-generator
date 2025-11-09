@@ -34,28 +34,28 @@ const Dashboard = () => {
           </div>
 
           <div className="dashboard-cards">
-            <div className="dashboard-card">
-              <div className="card-icon">📊</div>
-              <h3>Analytics</h3>
-              <p>View your invoice analytics and reports</p>
-            </div>
-
-            <div className="dashboard-card">
+            <div className="dashboard-card" onClick={() => navigate('/invoices')} style={{ cursor: 'pointer' }}>
               <div className="card-icon">📄</div>
               <h3>Invoices</h3>
               <p>Manage and create new invoices</p>
             </div>
 
-            <div className="dashboard-card">
+            <div className="dashboard-card" onClick={() => navigate('/companies')} style={{ cursor: 'pointer' }}>
+              <div className="card-icon">🏢</div>
+              <h3>Companies</h3>
+              <p>Manage your companies</p>
+            </div>
+
+            <div className="dashboard-card" onClick={() => navigate('/clients')} style={{ cursor: 'pointer' }}>
               <div className="card-icon">👥</div>
               <h3>Clients</h3>
               <p>Manage your client database</p>
             </div>
 
             <div className="dashboard-card">
-              <div className="card-icon">⚙️</div>
-              <h3>Settings</h3>
-              <p>Configure your account settings</p>
+              <div className="card-icon">📊</div>
+              <h3>Analytics</h3>
+              <p>View your invoice analytics and reports</p>
             </div>
           </div>
 
