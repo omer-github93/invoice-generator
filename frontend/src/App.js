@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider } from './context/AuthContext';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
-import InvoiceList from './components/InvoiceList';
-import InvoiceForm from './components/InvoiceForm';
-import CompanyList from './components/CompanyList';
-import CompanyForm from './components/CompanyForm';
-import ClientList from './components/ClientList';
-import ClientForm from './components/ClientForm';
+import InvoiceList from './pages/InvoicePage/InvoiceList';
+import InvoiceForm from './pages/InvoicePage/InvoiceForm';
+import CompanyList from './pages/CompanyPage/CompanyList';
+import CompanyForm from './pages/CompanyPage/CompanyForm';
+import ClientList from './pages/ClientPage/ClientList';
+import ClientForm from './pages/ClientPage/ClientForm';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 

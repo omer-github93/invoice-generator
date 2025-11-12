@@ -125,13 +125,14 @@ class InvoiceController extends Controller
             'company_id' => ['required', 'integer', 'exists:companies,id'],
             'client_id' => ['required', 'integer', 'exists:clients,id'],
             'date' => ['required', 'date'],
-            'due_date' => ['required', 'date'],
-            'payment_terms' => ['nullable', 'string'],
+            'due_date' => ['nullable', 'date'],
+            'payment_terms' => ['required', 'in:cash,credit card,bank transfer'],
             'status' => ['required', 'in:draft,unpaid,partially_paid,paid'],
-            'balance_due' => ['required', 'numeric', 'min:0'],
+            'balance_due' => ['nullable', 'numeric', 'min:0'],
             'items' => ['required', 'array', 'min:1'],
             'items.*.description' => ['required', 'string'],
             'items.*.quantity' => ['required', 'numeric', 'min:0.01'],
+            'items.*.cost_price' => ['nullable', 'numeric', 'min:0'],
             'items.*.unit_price' => ['required', 'numeric', 'min:0'],
             'note' => ['nullable', 'string'],
             'attachments' => ['nullable', 'array'],
@@ -182,14 +183,13 @@ class InvoiceController extends Controller
                 'client_id' => intval($data['client_id']),
                 'invoice_number' => $invoiceNumber,
                 'date' => $data['date'],
-                'due_date' => $data['due_date'],
-                'payment_terms' => $data['payment_terms'] ?? 'cash',
+                'due_date' => $data['due_date'] ?? null,
+                'payment_terms' => $data['payment_terms'],
                 'status' => $data['status'],
                 'subtotal' => $subtotal,
                 'tax_amount' => $taxAmount,
-                'discount_amount' => 0,
                 'total' => $total,
-                'balance_due' => floatval($data['balance_due']),
+                'balance_due' => isset($data['balance_due']) ? floatval($data['balance_due']) : null,
                 'note' => $data['note'] ?? null,
                 'attachments' => $attachments,
                 'created_by' => $request->user()->id,
@@ -199,11 +199,13 @@ class InvoiceController extends Controller
             foreach ($items as $item) {
                 $quantity = floatval($item['quantity'] ?? 0);
                 $unitPrice = floatval($item['unit_price'] ?? 0);
+                $costPrice = floatval($item['cost_price'] ?? 0);
                 $lineTotal = $quantity * $unitPrice;
                 InvoiceItem::create([
                     'invoice_id' => $invoice->id,
                     'description' => $item['description'],
                     'quantity' => $quantity,
+                    'cost_price' => $costPrice,
                     'unit_price' => $unitPrice,
                     'line_total' => $lineTotal,
                     'created_by' => $request->user()->id,
@@ -242,13 +244,14 @@ class InvoiceController extends Controller
             'company_id' => ['required', 'integer', 'exists:companies,id'],
             'client_id' => ['required', 'integer', 'exists:clients,id'],
             'date' => ['required', 'date'],
-            'due_date' => ['required', 'date'],
-            'payment_terms' => ['nullable', 'string'],
+            'due_date' => ['nullable', 'date'],
+            'payment_terms' => ['required', 'in:cash,credit card,bank transfer'],
             'status' => ['required', 'in:draft,unpaid,partially_paid,paid'],
-            'balance_due' => ['required', 'numeric', 'min:0'],
+            'balance_due' => ['nullable', 'numeric', 'min:0'],
             'items' => ['required', 'array', 'min:1'],
             'items.*.description' => ['required', 'string'],
             'items.*.quantity' => ['required', 'numeric', 'min:0.01'],
+            'items.*.cost_price' => ['nullable', 'numeric', 'min:0'],
             'items.*.unit_price' => ['required', 'numeric', 'min:0'],
             'note' => ['nullable', 'string'],
             'attachments' => ['nullable', 'array'],
@@ -294,13 +297,13 @@ class InvoiceController extends Controller
                 'company_id' => intval($data['company_id']),
                 'client_id' => intval($data['client_id']),
                 'date' => $data['date'],
-                'due_date' => $data['due_date'],
-                'payment_terms' => $data['payment_terms'] ?? 'cash',
+                'due_date' => $data['due_date'] ?? null,
+                'payment_terms' => $data['payment_terms'],
                 'status' => $data['status'],
                 'subtotal' => $subtotal,
                 'tax_amount' => $taxAmount,
                 'total' => $total,
-                'balance_due' => floatval($data['balance_due']),
+                'balance_due' => isset($data['balance_due']) ? floatval($data['balance_due']) : null,
                 'note' => $data['note'] ?? null,
                 'attachments' => $attachments,
             ]);
@@ -310,11 +313,13 @@ class InvoiceController extends Controller
             foreach ($items as $item) {
                 $quantity = floatval($item['quantity'] ?? 0);
                 $unitPrice = floatval($item['unit_price'] ?? 0);
+                $costPrice = floatval($item['cost_price'] ?? 0);
                 $lineTotal = $quantity * $unitPrice;
                 InvoiceItem::create([
                     'invoice_id' => $invoice->id,
                     'description' => $item['description'],
                     'quantity' => $quantity,
+                    'cost_price' => $costPrice,
                     'unit_price' => $unitPrice,
                     'line_total' => $lineTotal,
                     'created_by' => $request->user()->id,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { clientService, companyService } from '../services/api';
+import { clientService, companyService } from '../../services/api';
 import './ClientForm.css';
 
 const ClientForm = () => {
@@ -177,11 +177,24 @@ const ClientForm = () => {
 
   return (
     <div className="client-form-container">
-      <div className="client-form-header">
-        <h2>{isEdit ? 'Edit Client' : 'Create Client'}</h2>
-        <button onClick={() => navigate('/clients')} className="btn-secondary">
-          Back to Clients
-        </button>
+      <div className="list-header">
+        <div className="header-left">
+          <button onClick={() => navigate('/clients')} className="back-button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <span>Back to Clients</span>
+          </button>
+          <div className="header-title-section">
+            <div className="header-icon-wrapper">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <h1>{isEdit ? 'Edit Client' : 'Create Client'}</h1>
+          </div>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="client-form" noValidate>

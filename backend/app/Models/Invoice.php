@@ -19,7 +19,6 @@ class Invoice extends Model
         'status',
         'subtotal',
         'tax_amount',
-        'discount_amount',
         'total',
         'balance_due',
         'note',
@@ -33,7 +32,6 @@ class Invoice extends Model
         'attachments' => 'array',
         'subtotal' => 'decimal:2',
         'tax_amount' => 'decimal:2',
-        'discount_amount' => 'decimal:2',
         'total' => 'decimal:2',
         'balance_due' => 'decimal:2',
     ];

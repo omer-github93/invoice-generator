@@ -58,15 +58,20 @@ export const authService = {
     }
   },
 
-  getMe: async () => {
-    const response = await api.get('/me');
+  getMe: async (signal = null) => {
+    const config = signal ? { signal } : {};
+    const response = await api.get('/me', config);
     return response.data;
   },
 };
 
 export const invoiceService = {
-  getInvoices: async (params = {}) => {
-    const response = await api.get('/invoices', { params });
+  getInvoices: async (params = {}, signal = null) => {
+    const config = { params };
+    if (signal) {
+      config.signal = signal;
+    }
+    const response = await api.get('/invoices', config);
     return response.data;
   },
 
@@ -78,11 +83,14 @@ export const invoiceService = {
   createInvoice: async (data) => {
     const formData = new FormData();
     
+    // Append all fields to FormData
     Object.keys(data).forEach(key => {
       if (key === 'items') {
+        // Send items as JSON string - backend will parse it
         data[key].forEach((item, index) => {
           formData.append(`items[${index}][description]`, item.description);
           formData.append(`items[${index}][quantity]`, item.quantity);
+          formData.append(`items[${index}][cost_price]`, item.cost_price || 0);
           formData.append(`items[${index}][unit_price]`, item.unit_price);
         });
       } else if (key === 'attachments' && data[key]) {
@@ -141,61 +149,27 @@ export const invoiceService = {
 };
 
 export const companyService = {
-  getCompanies: async (params = {}) => {
-    const response = await api.get('/companies', { params });
-    return response.data;
-  },
-
-  getCompany: async (id) => {
-    const response = await api.get(`/companies/${id}`);
-    return response.data;
-  },
-
-  createCompany: async (data) => {
-    const formData = new FormData();
-    formData.append('name', data.name);
-    if (data.address) {
-      formData.append('address', data.address);
+  getCompanies: async (params = {}, signal = null) => {
+    const config = { params };
+    if (signal) {
+      config.signal = signal;
     }
-    if (data.logo) {
-      formData.append('logo', data.logo);
-    }
-
-    const response = await api.post('/companies', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    return response.data;
-  },
-
-  updateCompany: async (id, data) => {
-    const formData = new FormData();
-    formData.append('name', data.name);
-    if (data.address) {
-      formData.append('address', data.address);
-    }
-    if (data.logo) {
-      formData.append('logo', data.logo);
-    }
-
-    const response = await api.put(`/companies/${id}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    return response.data;
-  },
-
-  deleteCompany: async (id) => {
-    const response = await api.delete(`/companies/${id}`);
+    const response = await api.get('/companies', config);
     return response.data;
   },
 };
 
 export const clientService = {
-  getClients: async (params = {}) => {
-    const response = await api.get('/clients', { params });
+  getClients: async (params = {}, signal = null) => {
+    // Handle backward compatibility: if first param is a number/string, treat it as companyId
+    if (typeof params === 'number' || typeof params === 'string') {
+      params = { company_id: params };
+    }
+    const config = { params };
+    if (signal) {
+      config.signal = signal;
+    }
+    const response = await api.get('/clients', config);
     return response.data;
   },
 

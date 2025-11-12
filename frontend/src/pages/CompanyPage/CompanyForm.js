@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { companyService } from '../services/api';
+import { companyService } from '../../services/api';
 import './CompanyForm.css';
 
 const CompanyForm = () => {
@@ -153,11 +153,26 @@ const CompanyForm = () => {
 
   return (
     <div className="company-form-container">
-      <div className="company-form-header">
-        <h2>{isEdit ? 'Edit Company' : 'Create Company'}</h2>
-        <button onClick={() => navigate('/companies')} className="btn-secondary">
-          Back to Companies
-        </button>
+      <div className="list-header">
+        <div className="header-left">
+          <button onClick={() => navigate('/companies')} className="back-button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            <span>Back to Companies</span>
+          </button>
+          <div className="header-title-section">
+            <div className="header-icon-wrapper">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+            </div>
+            <h1>{isEdit ? 'Edit Company' : 'Create Company'}</h1>
+          </div>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="company-form" noValidate>

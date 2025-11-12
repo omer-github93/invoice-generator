@@ -1,4 +1,4 @@
-.client-list-container {
+.company-list-container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
@@ -47,36 +47,90 @@
   stroke: white;
 }
 
+.back-button span {
+  display: inline-block;
+}
+
+.header-title-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.header-icon-wrapper svg {
+  stroke: white;
+}
+
 .list-header h1 {
   margin: 0;
   color: white;
   font-size: 32px;
   font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.list-header .btn-primary {
+.btn-create-invoice {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  background: white;
-  color: #667eea;
+  gap: 10px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 16px;
   font-weight: 600;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  position: relative;
+  overflow: hidden;
 }
 
-.list-header .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.btn-create-invoice::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
 }
 
-.list-header .btn-primary svg {
-  stroke: #667eea;
+.btn-create-invoice:hover::before {
+  left: 100%;
+}
+
+.btn-create-invoice:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+  background: linear-gradient(135deg, #45a049 0%, #4CAF50 100%);
+}
+
+.btn-create-invoice:active {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);
+}
+
+.btn-create-invoice svg {
+  stroke: white;
+  transition: transform 0.3s ease;
+}
+
+.btn-create-invoice:hover svg {
+  transform: rotate(90deg);
 }
 
 .filters-section {
@@ -130,25 +184,25 @@
   color: #666;
 }
 
-.clients-table {
+.companies-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.clients-table th,
-.clients-table td {
+.companies-table th,
+.companies-table td {
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #eee;
 }
 
-.clients-table th {
+.companies-table th {
   background-color: #f5f5f5;
   font-weight: 600;
   color: #333;
 }
 
-.clients-table tbody tr:hover {
+.companies-table tbody tr:hover {
   background-color: #f9f9f9;
 }
 
@@ -158,20 +212,16 @@
   color: #666;
 }
 
-.companies-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
+.company-logo-small {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  border-radius: 4px;
 }
 
-.company-badge {
-  display: inline-block;
-  padding: 4px 8px;
-  background-color: #e3f2fd;
-  color: #1976d2;
-  border-radius: 12px;
+.no-logo {
+  color: #999;
   font-size: 12px;
-  font-weight: 500;
 }
 
 .action-buttons {
@@ -274,16 +324,35 @@
     align-items: flex-start;
   }
 
+  .header-left {
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+  }
+
+  .header-title-section {
+    width: 100%;
+  }
+
+  .list-header h1 {
+    font-size: 24px;
+  }
+
+  .btn-create-invoice {
+    width: 100%;
+    justify-content: center;
+  }
+
   .filter-row {
     grid-template-columns: 1fr;
   }
 
-  .clients-table {
+  .companies-table {
     font-size: 12px;
   }
 
-  .clients-table th,
-  .clients-table td {
+  .companies-table th,
+  .companies-table td {
     padding: 8px;
   }
 

@@ -13,6 +13,7 @@ class InvoiceItem extends Model
         'invoice_id',
         'description',
         'quantity',
+        'cost_price',
         'unit_price',
         'line_total',
         'created_by',
@@ -20,6 +21,7 @@ class InvoiceItem extends Model
 
     protected $casts = [
         'quantity' => 'decimal:2',
+        'cost_price' => 'decimal:2',
         'unit_price' => 'decimal:2',
         'line_total' => 'decimal:2',
     ];

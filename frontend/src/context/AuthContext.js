@@ -17,23 +17,38 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const initAuth = async () => {
-      const token = localStorage.getItem('token');
-      const storedUser = localStorage.getItem('user');
-      
-      if (token && storedUser) {
-        try {
-          setUser(JSON.parse(storedUser));
-          // Verify token is still valid
-          const data = await authService.getMe();
-          setUser(data.user);
-          localStorage.setItem('user', JSON.stringify(data.user));
-        } catch (error) {
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
+      try {
+        const token = localStorage.getItem('token');
+        const storedUser = localStorage.getItem('user');
+        
+        if (token && storedUser) {
+          try {
+            // Set user from localStorage immediately for faster UI
+            setUser(JSON.parse(storedUser));
+            
+            // Verify token is still valid
+            const data = await authService.getMe();
+            setUser(data.user);
+            localStorage.setItem('user', JSON.stringify(data.user));
+          } catch (error) {
+            // Token is invalid, clear everything
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            setUser(null);
+          }
+        } else {
+          // No token or user, ensure user is null
           setUser(null);
         }
+      } catch (error) {
+        console.error('Auth initialization error:', error);
+        setUser(null);
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      } finally {
+        // Always set loading to false, regardless of success or failure
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     initAuth();

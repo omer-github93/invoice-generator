@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { clientService } from '../services/api';
-import ConfirmDialog from './ConfirmDialog';
+import { clientService } from '../../services/api';
+import ConfirmDialog from '../../components/ConfirmDialog';
 import './ClientList.css';
 
 const ClientList = () => {
@@ -139,19 +139,27 @@ const ClientList = () => {
       <div className="list-header">
         <div className="header-left">
           <button onClick={() => navigate('/dashboard')} className="back-button">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
-            Back to Dashboard
+            <span>Back to Dashboard</span>
           </button>
-          <h1>Clients</h1>
+          <div className="header-title-section">
+            <div className="header-icon-wrapper">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <h1>Clients</h1>
+          </div>
         </div>
-        <button onClick={() => navigate('/clients/new')} className="btn-primary">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <button onClick={() => navigate('/clients/new')} className="btn-create-invoice">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
             <line x1="12" y1="5" x2="12" y2="19"></line>
             <line x1="5" y1="12" x2="19" y2="12"></line>
           </svg>
-          Create Client
+          <span>Create Client</span>
         </button>
       </div>
 
