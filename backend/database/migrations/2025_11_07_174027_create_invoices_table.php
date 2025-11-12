@@ -23,7 +23,7 @@ return new class extends Migration
             $table->decimal('subtotal',15,2)->default(0);  // total of the invoice before tax and discount
             $table->decimal('tax_amount',15,2)->default(0); // tax amount of the invoice
             $table->decimal('total',15,2)->default(0); // total amount of the invoice
-            $table->decimal('balance_due',15,2)->default(0); // remaining amount to be paid
+            $table->decimal('balance_due',15,2)->default(0)->nullable(); // remaining amount to be paid
             $table->text('note')->nullable();
             $table->json('attachments')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();

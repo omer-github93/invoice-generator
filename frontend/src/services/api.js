@@ -5,7 +5,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
 const api = axios.create({
   baseURL: API_URL,
   headers: {
-    'Content-Type': 'application/json',
+    // 'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
 });
@@ -195,6 +195,18 @@ export const clientService = {
 
   deleteClient: async (id) => {
     const response = await api.delete(`/clients/${id}`);
+    return response.data;
+  },
+};
+
+export const settingService = {
+  getSettings: async () => {
+    const response = await api.get('/settings');
+    return response.data;
+  },
+  updateSettings: async (formData) => {
+    // Don't set Content-Type manually for FormData - axios will set it with boundary
+    const response = await api.post('/settings', formData);
     return response.data;
   },
 };

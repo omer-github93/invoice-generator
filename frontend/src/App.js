@@ -9,6 +9,7 @@ import CompanyList from './pages/CompanyPage/CompanyList';
 import CompanyForm from './pages/CompanyPage/CompanyForm';
 import ClientList from './pages/ClientPage/ClientList';
 import ClientForm from './pages/ClientPage/ClientForm';
+import Settings from './pages/SettingsPage/Settings';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -95,6 +96,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ClientForm />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <Settings />
               </ProtectedRoute>
             }
           />

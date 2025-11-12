@@ -156,6 +156,24 @@ const Dashboard = () => {
               <h3>Analytics</h3>
               <p>View your invoice analytics and reports</p>
             </div>
+
+            <div className="dashboard-card card-settings" onClick={() => navigate('/settings')}>
+              <div className="card-header">
+                <div className="card-icon-wrapper icon-settings">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M12 1v6m0 6v6M5.64 5.64l4.24 4.24m4.24 4.24l4.24 4.24M1 12h6m6 0h6M5.64 18.36l4.24-4.24m4.24-4.24l4.24-4.24"></path>
+                  </svg>
+                </div>
+                <div className="card-arrow">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+              </div>
+              <h3>Settings</h3>
+              <p>Configure your company information and preferences</p>
+            </div>
           </div>
         </div>
       </main>
