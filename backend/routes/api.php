@@ -24,7 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/companies', [CompanyController::class, 'index']);
     Route::get('/companies/{id}', [CompanyController::class, 'show']);
     Route::post('/companies', [CompanyController::class, 'store']);
-    Route::put('/companies/{id}', [CompanyController::class, 'update']);
+    Route::match(['put', 'post'], '/companies/{id}', [CompanyController::class, 'update']);
     Route::delete('/companies/{id}', [CompanyController::class, 'destroy']);
     
     // Client routes

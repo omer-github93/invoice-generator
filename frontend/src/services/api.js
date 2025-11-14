@@ -185,6 +185,9 @@ export const companyService = {
   updateCompany: async (id, data) => {
     const formData = new FormData();
     
+    // Add _method field for Laravel to recognize it as PUT
+    formData.append('_method', 'PUT');
+    
     Object.keys(data).forEach(key => {
       if (key === 'logo' && data[key] instanceof File) {
         formData.append('logo', data[key]);
@@ -193,7 +196,7 @@ export const companyService = {
       }
     });
 
-    const response = await api.put(`/companies/${id}`, formData, {
+    const response = await api.post(`/companies/${id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
