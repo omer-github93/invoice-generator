@@ -39,7 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/invoices', [InvoiceController::class, 'index']);
     Route::get('/invoices/{id}', [InvoiceController::class, 'show']);
     Route::post('/invoices', [InvoiceController::class, 'store']);
-    Route::put('/invoices/{id}', [InvoiceController::class, 'update']);
+    Route::match(['put', 'post'], '/invoices/{id}', [InvoiceController::class, 'update']);
     Route::delete('/invoices/{id}', [InvoiceController::class, 'destroy']);
     Route::get('/invoices/{id}/pdf', [InvoiceController::class, 'pdf']);
     

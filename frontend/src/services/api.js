@@ -113,11 +113,15 @@ export const invoiceService = {
   updateInvoice: async (id, data) => {
     const formData = new FormData();
     
+    // Add _method field for Laravel to recognize it as PUT
+    formData.append('_method', 'PUT');
+    
     Object.keys(data).forEach(key => {
       if (key === 'items') {
         data[key].forEach((item, index) => {
           formData.append(`items[${index}][description]`, item.description);
           formData.append(`items[${index}][quantity]`, item.quantity);
+          formData.append(`items[${index}][cost_price]`, item.cost_price || 0);
           formData.append(`items[${index}][unit_price]`, item.unit_price);
         });
       } else if (key === 'attachments' && data[key]) {
@@ -129,7 +133,7 @@ export const invoiceService = {
       }
     });
 
-    const response = await api.put(`/invoices/${id}`, formData, {
+    const response = await api.post(`/invoices/${id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
