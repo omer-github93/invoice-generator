@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { clientService, companyService } from '../../services/api';
 import './ClientForm.css';
@@ -18,6 +18,16 @@ const ClientForm = () => {
   });
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
+  const [companySearchTerm, setCompanySearchTerm] = useState('');
+  const [isCompanyDropdownOpen, setIsCompanyDropdownOpen] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
+  
+  // Refs for required fields
+  const nameRef = useRef(null);
+  const companyIdsRef = useRef(null);
+  const companyDropdownRef = useRef(null);
+  const companySearchInputRef = useRef(null);
 
   useEffect(() => {
     loadCompanies();
@@ -25,6 +35,21 @@ const ClientForm = () => {
       loadClient();
     }
   }, [id]);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (companyDropdownRef.current && !companyDropdownRef.current.contains(event.target)) {
+        setIsCompanyDropdownOpen(false);
+        setTouched(prev => ({ ...prev, company_ids: true }));
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const loadCompanies = async () => {
     try {
@@ -90,7 +115,7 @@ const ClientForm = () => {
     }
   };
 
-  const handleCompanyChange = (companyId) => {
+  const handleCompanyToggle = (companyId) => {
     const companyIdNum = parseInt(companyId);
     setFormData(prev => {
       const companyIds = prev.company_ids.includes(companyIdNum)
@@ -101,6 +126,53 @@ const ClientForm = () => {
         company_ids: companyIds,
       };
     });
+    
+    if (errors.company_ids) {
+      setErrors({ ...errors, company_ids: '' });
+    }
+  };
+
+  const handleRemoveCompany = (companyId, e) => {
+    e.stopPropagation();
+    setFormData(prev => ({
+      ...prev,
+      company_ids: prev.company_ids.filter(id => id !== companyId),
+    }));
+  };
+
+  const filteredCompanies = companies.filter(company =>
+    company.name.toLowerCase().includes(companySearchTerm.toLowerCase())
+  );
+
+  const getSelectedCompanyNames = () => {
+    return formData.company_ids
+      .map(id => companies.find(c => c.id === id)?.name)
+      .filter(Boolean);
+  };
+
+  const scrollToFirstError = (errors) => {
+    if (errors.name) {
+      nameRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => nameRef.current?.focus(), 300);
+      return;
+    }
+    if (errors.company_ids) {
+      companyIdsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => {
+        setIsCompanyDropdownOpen(true);
+        companySearchInputRef.current?.focus();
+      }, 300);
+      return;
+    }
+    if (errors.email) {
+      // Email is optional, but if there's an error, scroll to it
+      const emailInput = document.getElementById('email');
+      if (emailInput) {
+        emailInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() => emailInput.focus(), 300);
+      }
+      return;
+    }
   };
 
   const validateForm = () => {
@@ -128,13 +200,18 @@ const ClientForm = () => {
 
     setErrors(newErrors);
     setTouched({ name: true, email: true, company_ids: true });
-    return isValid;
+    return { isValid, errors: newErrors };
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) {
+    const validation = validateForm();
+    if (!validation.isValid) {
+      // Scroll to first error
+      setTimeout(() => {
+        scrollToFirstError(validation.errors);
+      }, 100);
       return;
     }
 
@@ -154,7 +231,12 @@ const ClientForm = () => {
         await clientService.createClient(submitData);
       }
 
-      navigate('/clients');
+      setShowSuccessModal(true);
+      setRedirecting(true);
+      
+      setTimeout(() => {
+        navigate('/clients');
+      }, 2000);
     } catch (error) {
       console.error('Error saving client:', error);
       if (error.response?.data?.errors) {
@@ -163,6 +245,10 @@ const ClientForm = () => {
           serverErrors[key] = error.response.data.errors[key][0];
         });
         setErrors(serverErrors);
+        // Scroll to first error after setting errors
+        setTimeout(() => {
+          scrollToFirstError(serverErrors);
+        }, 100);
       } else {
         alert('Failed to save client. Please check all fields.');
       }
@@ -204,6 +290,7 @@ const ClientForm = () => {
             type="text"
             id="name"
             name="name"
+            ref={nameRef}
             value={formData.name}
             onChange={handleChange}
             onBlur={() => handleBlur('name')}
@@ -247,23 +334,88 @@ const ClientForm = () => {
           />
         </div>
 
-        <div className="form-group">
-          <label>Companies *</label>
-          <div className="company-checkboxes">
-            {companies.length === 0 ? (
-              <p className="no-companies">No companies available. Please create companies first.</p>
-            ) : (
-              companies.map((company) => (
-                <label key={company.id} className="checkbox-label">
+        <div className="form-group" ref={companyIdsRef}>
+          <label htmlFor="company_ids">Companies *</label>
+          <div 
+            className={`custom-multi-select ${errors.company_ids && touched.company_ids ? 'error' : ''} ${isCompanyDropdownOpen ? 'open' : ''}`}
+            ref={companyDropdownRef}
+          >
+            <div 
+              className="multi-select-input"
+              onClick={() => {
+                if (!loading) {
+                  setIsCompanyDropdownOpen(!isCompanyDropdownOpen);
+                  setTimeout(() => companySearchInputRef.current?.focus(), 100);
+                }
+              }}
+            >
+              <div className="selected-companies">
+                {formData.company_ids.length === 0 ? (
+                  <span className="placeholder">Select companies...</span>
+                ) : (
+                  getSelectedCompanyNames().map((name, index) => {
+                    const companyId = companies.find(c => c.name === name)?.id;
+                    return (
+                      <span key={companyId || index} className="selected-tag">
+                        {name}
+                        <button
+                          type="button"
+                          onClick={(e) => handleRemoveCompany(companyId, e)}
+                          className="remove-tag"
+                          disabled={loading}
+                        >
+                          ×
+                        </button>
+                      </span>
+                    );
+                  })
+                )}
+              </div>
+              <svg 
+                className={`dropdown-arrow ${isCompanyDropdownOpen ? 'open' : ''}`}
+                width="20" 
+                height="20" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </div>
+            {isCompanyDropdownOpen && (
+              <div className="multi-select-dropdown">
+                <div className="search-box">
                   <input
-                    type="checkbox"
-                    checked={formData.company_ids.includes(company.id)}
-                    onChange={() => handleCompanyChange(company.id)}
-                    disabled={loading}
+                    ref={companySearchInputRef}
+                    type="text"
+                    placeholder="Search companies..."
+                    value={companySearchTerm}
+                    onChange={(e) => setCompanySearchTerm(e.target.value)}
+                    className="company-search-input"
                   />
-                  <span>{company.name}</span>
-                </label>
-              ))
+                </div>
+                <div className="options-list">
+                  {filteredCompanies.length === 0 ? (
+                    <div className="no-options">No companies found</div>
+                  ) : (
+                    filteredCompanies.map((company) => (
+                      <label
+                        key={company.id}
+                        className={`option-item ${formData.company_ids.includes(company.id) ? 'selected' : ''}`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={formData.company_ids.includes(company.id)}
+                          onChange={() => handleCompanyToggle(company.id)}
+                          disabled={loading}
+                        />
+                        <span>{company.name}</span>
+                      </label>
+                    ))
+                  )}
+                </div>
+              </div>
             )}
           </div>
           {errors.company_ids && touched.company_ids && (
@@ -280,6 +432,27 @@ const ClientForm = () => {
           </button>
         </div>
       </form>
+
+      {showSuccessModal && (
+        <div className="success-modal-overlay">
+          <div className="success-modal">
+            <div className="success-icon-wrapper">
+              <svg className="success-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            <h2>Client {isEdit ? 'Updated' : 'Created'} Successfully!</h2>
+            <p>Your client has been {isEdit ? 'updated' : 'saved'}.</p>
+            {redirecting && (
+              <div className="redirect-loader">
+                <div className="spinner"></div>
+                <span>Redirecting to clients list...</span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
