@@ -210,6 +210,10 @@ const CompanyList = () => {
                           src={`${(process.env.REACT_APP_API_URL || 'http://localhost:8000/api').replace('/api', '')}/storage/${company.logo_path}`} 
                           alt={company.name}
                           className="company-logo-small"
+                          onError={(e) => {
+                            e.target.src = '/images/no-image-available.jpg';
+                            e.target.onerror = null; // Prevent infinite loop if default image also fails
+                          }}
                         />
                       ) : (
                         <span className="no-logo">No logo</span>
