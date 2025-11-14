@@ -18,6 +18,8 @@ const CompanyForm = () => {
   const [touched, setTouched] = useState({});
   const [logoPreview, setLogoPreview] = useState(null);
   const [existingLogo, setExistingLogo] = useState(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
 
   useEffect(() => {
     if (isEdit) {
@@ -130,7 +132,12 @@ const CompanyForm = () => {
         await companyService.createCompany(submitData);
       }
 
-      navigate('/companies');
+      setShowSuccessModal(true);
+      setRedirecting(true);
+      
+      setTimeout(() => {
+        navigate('/companies');
+      }, 2000);
     } catch (error) {
       console.error('Error saving company:', error);
       if (error.response?.data?.errors) {
@@ -233,6 +240,27 @@ const CompanyForm = () => {
           </button>
         </div>
       </form>
+
+      {showSuccessModal && (
+        <div className="success-modal-overlay">
+          <div className="success-modal">
+            <div className="success-icon-wrapper">
+              <svg className="success-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            <h2>Company {isEdit ? 'Updated' : 'Created'} Successfully!</h2>
+            <p>Your company has been {isEdit ? 'updated' : 'saved'}.</p>
+            {redirecting && (
+              <div className="redirect-loader">
+                <div className="spinner"></div>
+                <span>Redirecting to companies list...</span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

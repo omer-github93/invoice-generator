@@ -157,6 +157,54 @@ export const companyService = {
     const response = await api.get('/companies', config);
     return response.data;
   },
+
+  getCompany: async (id) => {
+    const response = await api.get(`/companies/${id}`);
+    return response.data;
+  },
+
+  createCompany: async (data) => {
+    const formData = new FormData();
+    
+    Object.keys(data).forEach(key => {
+      if (key === 'logo' && data[key] instanceof File) {
+        formData.append('logo', data[key]);
+      } else if (data[key] !== null && data[key] !== undefined) {
+        formData.append(key, data[key]);
+      }
+    });
+
+    const response = await api.post('/companies', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  updateCompany: async (id, data) => {
+    const formData = new FormData();
+    
+    Object.keys(data).forEach(key => {
+      if (key === 'logo' && data[key] instanceof File) {
+        formData.append('logo', data[key]);
+      } else if (data[key] !== null && data[key] !== undefined) {
+        formData.append(key, data[key]);
+      }
+    });
+
+    const response = await api.put(`/companies/${id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  deleteCompany: async (id) => {
+    const response = await api.delete(`/companies/${id}`);
+    return response.data;
+  },
 };
 
 export const clientService = {

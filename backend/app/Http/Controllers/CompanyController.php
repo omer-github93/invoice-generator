@@ -75,7 +75,9 @@ class CompanyController extends Controller
         try {
             $logoPath = null;
             if ($request->hasFile('logo')) {
-                $logoPath = $request->file('logo')->store('company-logos', 'public');
+                // Store new logo in uploads/company/ directory
+                // This will save to: storage/app/public/uploads/company/filename.jpg
+                $logoPath = $request->file('logo')->store('uploads/company', 'public');
             }
 
             $company = Company::create([
@@ -115,10 +117,11 @@ class CompanyController extends Controller
             // Handle logo upload
             if ($request->hasFile('logo')) {
                 // Delete old logo if exists
-                if ($company->logo_path) {
+                if ($company->logo_path && Storage::disk('public')->exists($company->logo_path)) {
                     Storage::disk('public')->delete($company->logo_path);
                 }
-                $logoPath = $request->file('logo')->store('company-logos', 'public');
+                // Store new logo in uploads/company/ directory
+                $logoPath = $request->file('logo')->store('uploads/company', 'public');
                 $company->logo_path = $logoPath;
             }
 
