@@ -7,10 +7,6 @@ const Settings = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [darkMode, setDarkMode] = useState(() => {
-    const saved = localStorage.getItem('darkMode');
-    return saved === 'true';
-  });
   const [formData, setFormData] = useState({
     name: '',
     logo_tagline: '',
@@ -28,20 +24,7 @@ const Settings = () => {
 
   useEffect(() => {
     loadSettings();
-    applyDarkMode(darkMode);
   }, []);
-
-  useEffect(() => {
-    applyDarkMode(darkMode);
-  }, [darkMode]);
-
-  const applyDarkMode = (isDark) => {
-    if (isDark) {
-      document.documentElement.classList.add('dark-mode');
-    } else {
-      document.documentElement.classList.remove('dark-mode');
-    }
-  };
 
   const loadSettings = async () => {
     try {
@@ -169,12 +152,6 @@ const Settings = () => {
     }
   };
 
-  const toggleDarkMode = () => {
-    const newMode = !darkMode;
-    setDarkMode(newMode);
-    localStorage.setItem('darkMode', newMode.toString());
-  };
-
   if (loading) {
     return <div className="settings-container">Loading...</div>;
   }
@@ -202,42 +179,6 @@ const Settings = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="settings-form" noValidate>
-        {/* Dark Mode Toggle */}
-        <div className="settings-section">
-          <div className="section-header">
-            <h2>Appearance</h2>
-          </div>
-          <div className="dark-mode-toggle-container">
-            <div className="dark-mode-label">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                {darkMode ? (
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                ) : (
-                  <>
-                    <circle cx="12" cy="12" r="5"></circle>
-                    <line x1="12" y1="1" x2="12" y2="3"></line>
-                    <line x1="12" y1="21" x2="12" y2="23"></line>
-                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                    <line x1="1" y1="12" x2="3" y2="12"></line>
-                    <line x1="21" y1="12" x2="23" y2="12"></line>
-                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                  </>
-                )}
-              </svg>
-              <span>{darkMode ? 'Dark Mode' : 'Light Mode'}</span>
-            </div>
-            <button
-              type="button"
-              className={`dark-mode-switch ${darkMode ? 'active' : ''}`}
-              onClick={toggleDarkMode}
-            >
-              <div className="switch-slider"></div>
-            </button>
-          </div>
-        </div>
-
         {/* Company Information */}
         <div className="settings-section">
           <div className="section-header">

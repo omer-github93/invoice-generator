@@ -283,3 +283,69 @@
   background-color: #616161;
 }
 
+/* Dark Mode Styles */
+.dark-mode .client-form-container {
+  background-color: #1a1a1a;
+}
+
+.dark-mode .client-form {
+  background: #2d2d2d;
+  border-color: #404040;
+}
+
+.dark-mode .form-group label {
+  color: #e0e0e0;
+}
+
+.dark-mode .form-group input[type="text"],
+.dark-mode .form-group input[type="email"] {
+  background: #1a1a1a;
+  border-color: #404040;
+  color: #e0e0e0;
+}
+
+.dark-mode .form-group input[type="text"]:focus,
+.dark-mode .form-group input[type="email"]:focus {
+  border-color: #667eea;
+}
+
+.dark-mode .form-group input[type="text"]:disabled,
+.dark-mode .form-group input[type="email"]:disabled {
+  background-color: #2d2d2d;
+  color: #666;
+}
+
+.dark-mode .company-checkboxes {
+  background-color: #1a1a1a;
+  border-color: #404040;
+}
+
+.dark-mode .checkbox-label {
+  color: #e0e0e0;
+}
+
+.dark-mode .checkbox-label:hover {
+  background-color: #353535;
+}
+
+.dark-mode .checkbox-label span {
+  color: #e0e0e0;
+}
+
+.dark-mode .no-companies {
+  color: #999;
+}
+
+.dark-mode .form-actions {
+  border-top-color: #404040;
+}
+
+.dark-mode .btn-secondary {
+  background-color: #404040;
+  color: #e0e0e0;
+}
+
+.dark-mode .btn-secondary:hover {
+  background-color: #505050;
+}
+

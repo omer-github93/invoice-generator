@@ -375,3 +375,117 @@
   }
 }
 
+/* Dark Mode Styles */
+.dark-mode .invoice-form-container {
+  background-color: #1a1a1a;
+}
+
+.dark-mode .invoice-form {
+  background: #2d2d2d;
+  border-color: #404040;
+}
+
+.dark-mode .invoice-header-section {
+  border-bottom-color: #404040;
+}
+
+.dark-mode .invoice-header-left h1 {
+  color: #e0e0e0;
+}
+
+.dark-mode .form-group label {
+  color: #e0e0e0;
+}
+
+.dark-mode .form-group input[type="text"],
+.dark-mode .form-group input[type="date"],
+.dark-mode .form-group input[type="number"],
+.dark-mode .form-group select,
+.dark-mode .form-group textarea {
+  background: #1a1a1a;
+  border-color: #404040;
+  color: #e0e0e0;
+}
+
+.dark-mode .form-group input[type="text"]:focus,
+.dark-mode .form-group input[type="date"]:focus,
+.dark-mode .form-group input[type="number"]:focus,
+.dark-mode .form-group select:focus,
+.dark-mode .form-group textarea:focus {
+  border-color: #667eea;
+}
+
+.dark-mode .form-group input[type="text"]:disabled,
+.dark-mode .form-group input[type="date"]:disabled,
+.dark-mode .form-group input[type="number"]:disabled,
+.dark-mode .form-group select:disabled,
+.dark-mode .form-group textarea:disabled {
+  background-color: #2d2d2d;
+  color: #666;
+}
+
+.dark-mode .items-table th {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+  border-bottom-color: #404040;
+}
+
+.dark-mode .items-table td {
+  color: #e0e0e0;
+  border-bottom-color: #404040;
+}
+
+.dark-mode .items-table input {
+  background: #1a1a1a;
+  border-color: #404040;
+  color: #e0e0e0;
+}
+
+.dark-mode .items-table input:focus {
+  border-color: #667eea;
+}
+
+.dark-mode .items-table input.error {
+  border-color: #ef4444;
+}
+
+.dark-mode .totals-section {
+  background-color: #1a1a1a;
+  border-color: #404040;
+}
+
+.dark-mode .totals-row {
+  color: #e0e0e0;
+  border-bottom-color: #404040;
+}
+
+.dark-mode .totals-row.total {
+  color: #e0e0e0;
+}
+
+.dark-mode .invoice-footer-note {
+  background-color: #1a1a1a;
+  color: #b0b0b0;
+}
+
+.dark-mode .invoice-footer-note a {
+  color: #667eea;
+}
+
+.dark-mode .form-actions {
+  border-top-color: #404040;
+}
+
+.dark-mode .btn-secondary {
+  background-color: #404040;
+  color: #e0e0e0;
+}
+
+.dark-mode .btn-secondary:hover {
+  background-color: #505050;
+}
+
+.dark-mode .field-error {
+  color: #ef4444;
+}
+

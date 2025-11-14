@@ -48,6 +48,37 @@
   gap: 20px;
 }
 
+/* Dark Mode Toggle */
+.dark-mode-toggle {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: none;
+  background: #f7fafc;
+  color: #667eea;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.dark-mode-toggle:hover {
+  background: #edf2f7;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode-toggle.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.dark-mode-toggle.active:hover {
+  background: linear-gradient(135deg, #5568d3 0%, #653a8f 100%);
+}
+
 .user-profile {
   display: flex;
   align-items: center;
@@ -469,4 +500,85 @@
     width: 48px;
     height: 48px;
   }
+
+  .dark-mode-toggle {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Dark Mode Styles */
+.dark-mode .dashboard-container {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+}
+
+.dark-mode .dashboard-nav {
+  background: #1a1a1a;
+  border-bottom-color: #404040;
+}
+
+.dark-mode .nav-content h2 {
+  color: #e0e0e0;
+}
+
+.dark-mode .user-profile {
+  background: #2d2d2d;
+}
+
+.dark-mode .user-profile:hover {
+  background: #353535;
+}
+
+.dark-mode .user-name {
+  color: #e0e0e0;
+}
+
+.dark-mode .user-role {
+  color: #b0b0b0;
+}
+
+.dark-mode .logout-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.dark-mode .user-info-card {
+  background: #2d2d2d;
+  border-color: #404040;
+}
+
+.dark-mode .user-info-header {
+  border-bottom-color: #404040;
+}
+
+.dark-mode .user-info-header svg {
+  color: #667eea;
+}
+
+.dark-mode .user-info-card h3 {
+  color: #e0e0e0;
+}
+
+.dark-mode .user-info-label {
+  color: #b0b0b0;
+}
+
+.dark-mode .user-info-value {
+  color: #e0e0e0;
+}
+
+.dark-mode .dashboard-card {
+  background: #2d2d2d;
+  border-color: #404040;
+}
+
+.dark-mode .dashboard-card:hover {
+  background: #353535;
+}
+
+.dark-mode .dashboard-card h3 {
+  color: #e0e0e0;
+}
+
+.dark-mode .dashboard-card p {
+  color: #b0b0b0;
 }

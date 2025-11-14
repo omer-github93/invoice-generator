@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Login from './components/Login';
@@ -14,6 +14,18 @@ import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 function App() {
+  // Initialize dark mode on app load
+  useEffect(() => {
+    const savedDarkMode = localStorage.getItem('darkMode');
+    const isDarkMode = savedDarkMode === 'true';
+    
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark-mode');
+    } else {
+      document.documentElement.classList.remove('dark-mode');
+    }
+  }, []);
+
   return (
     <AuthProvider>
       <Router>

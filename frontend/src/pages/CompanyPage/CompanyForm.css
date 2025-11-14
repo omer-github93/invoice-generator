@@ -248,3 +248,51 @@
   background-color: #616161;
 }
 
+/* Dark Mode Styles */
+.dark-mode .company-form-container {
+  background-color: #1a1a1a;
+}
+
+.dark-mode .company-form {
+  background: #2d2d2d;
+  border-color: #404040;
+}
+
+.dark-mode .form-group label {
+  color: #e0e0e0;
+}
+
+.dark-mode .form-group input[type="text"],
+.dark-mode .form-group input[type="file"] {
+  background: #1a1a1a;
+  border-color: #404040;
+  color: #e0e0e0;
+}
+
+.dark-mode .form-group input[type="text"]:focus {
+  border-color: #667eea;
+}
+
+.dark-mode .form-group input[type="text"]:disabled {
+  background-color: #2d2d2d;
+  color: #666;
+}
+
+.dark-mode .logo-preview img {
+  border-color: #404040;
+  background: #1a1a1a;
+}
+
+.dark-mode .form-actions {
+  border-top-color: #404040;
+}
+
+.dark-mode .btn-secondary {
+  background-color: #404040;
+  color: #e0e0e0;
+}
+
+.dark-mode .btn-secondary:hover {
+  background-color: #505050;
+}
+
