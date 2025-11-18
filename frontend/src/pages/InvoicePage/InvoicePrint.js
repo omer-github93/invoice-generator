@@ -122,8 +122,8 @@ export const generateInvoicePdf = async (invoiceId) => {
         gap: 8px;
       }
       .company-logo {
-        width: 80px;
-        height: 80px;
+        width: 150px;
+        height: 150px;
         background: transparent;
         border-radius: 8px;
         display: flex;
@@ -397,7 +397,7 @@ export const generateInvoicePdf = async (invoiceId) => {
                 <div class="header-left">
                   <div class="company-logo-section">
                     <div class="company-logo">
-                      ${logoToUse ? `<img src="${logoToUse}" alt="${settings.name || company.name}" />` : `<div style="width: 80px; height: 80px; background: #2563eb; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 32px;">${(settings.name || company.name) ? (settings.name || company.name).charAt(0).toUpperCase() : 'C'}</div>`}
+                      ${logoToUse ? `<img src="${logoToUse}" alt="${settings.name || company.name}" />` : `<div style="width: 120px; height: 120px; background: #2563eb; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 48px;">${(settings.name || company.name) ? (settings.name || company.name).charAt(0).toUpperCase() : 'C'}</div>`}
                     </div>
                     ${settings.logo_tagline ? `<div class="company-tagline">${settings.logo_tagline}</div>` : ''}
                   </div>
@@ -569,7 +569,7 @@ const InvoicePrint = ({ invoice, settings }) => {
                 {logoToUse ? (
                   <img src={logoToUse} alt={settings?.name || company?.name} />
                 ) : (
-                  <div style={{width: '80px', height: '80px', background: '#2563eb', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold', fontSize: '32px'}}>
+                  <div style={{width: '150px', height: '150px', background: '#2563eb', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold', fontSize: '48px'}}>
                     {(settings?.name || company?.name) ? (settings?.name || company?.name).charAt(0).toUpperCase() : 'C'}
                   </div>
                 )}
