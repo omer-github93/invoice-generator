@@ -64,6 +64,7 @@ export const generateInvoicePdf = async (invoiceId) => {
       .invoice-container {
         max-width: 210mm;
         min-height: 297mm;
+        max-height: 297mm;
         margin: 0 auto;
         padding: 40px;
         background: white;
@@ -175,6 +176,7 @@ export const generateInvoicePdf = async (invoiceId) => {
         flex: 1;
         display: flex;
         flex-direction: column;
+        min-height: 0;
       }
       .invoice-parties {
         display: flex;
@@ -292,6 +294,8 @@ export const generateInvoicePdf = async (invoiceId) => {
       .invoice-footer-info {
         margin-bottom: 15px;
         margin-top: auto;
+        page-break-inside: avoid;
+        page-break-after: avoid;
       }
       .footer-section {
         margin-bottom: 12px;
@@ -322,6 +326,8 @@ export const generateInvoicePdf = async (invoiceId) => {
         justify-content: space-between;
         align-items: center;
         margin-top: auto;
+        page-break-inside: avoid;
+        page-break-before: avoid;
       }
       .contact-info {
         display: flex;
@@ -357,22 +363,34 @@ export const generateInvoicePdf = async (invoiceId) => {
         .invoice-container { 
           max-width: 100%;
           min-height: 297mm;
-          padding: 20mm 25mm;
+          max-height: 297mm;
+          padding: 15mm 20mm;
           margin: 0;
           page-break-inside: avoid;
           display: flex;
           flex-direction: column;
+          overflow: hidden;
         }
         .print-button { display: none; }
         @page { margin: 0; size: A4; }
-        .invoice-header { margin-bottom: 20px; padding-bottom: 15px; }
-        .invoice-content { flex: 1; display: flex; flex-direction: column; }
-        .invoice-parties { margin-bottom: 18px; }
-        .invoice-table { margin-bottom: 15px; }
-        .invoice-summary { margin-bottom: 15px; }
-        .invoice-footer-info { margin-bottom: 12px; margin-top: auto; }
-        .invoice-contact-footer { margin-top: 10px; padding: 12px 25px; }
-        .footer-section { margin-bottom: 8px; }
+        .invoice-header { margin-bottom: 15px; padding-bottom: 12px; }
+        .invoice-content { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+        .invoice-parties { margin-bottom: 15px; }
+        .invoice-table { margin-bottom: 12px; }
+        .invoice-summary { margin-bottom: 12px; }
+        .invoice-footer-info { 
+          margin-bottom: 10px; 
+          margin-top: auto; 
+          page-break-inside: avoid;
+          page-break-after: avoid;
+        }
+        .invoice-contact-footer { 
+          margin-top: 0; 
+          padding: 10px 20px; 
+          page-break-inside: avoid;
+          page-break-before: avoid;
+        }
+        .footer-section { margin-bottom: 6px; }
       }
     `;
     

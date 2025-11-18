@@ -185,7 +185,7 @@ const Dashboard = () => {
               <p>Manage your client database</p>
             </div>
 
-            <div className="dashboard-card card-analytics">
+            <div className="dashboard-card card-analytics" onClick={() => navigate('/analytics')}>
               <div className="card-header">
                 <div className="card-icon-wrapper icon-analytics">
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

@@ -150,6 +150,11 @@ export const invoiceService = {
     const response = await api.get(`/invoices/${id}/pdf`);
     return response.data;
   },
+
+  getStatistics: async () => {
+    const response = await api.get('/dashboard/statistics');
+    return response.data;
+  },
 };
 
 export const companyService = {

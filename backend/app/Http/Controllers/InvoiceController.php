@@ -373,4 +373,5 @@ class InvoiceController extends Controller
             'pdf_url' => null, // Will be implemented with PDF library
         ]);
     }
+
 }
