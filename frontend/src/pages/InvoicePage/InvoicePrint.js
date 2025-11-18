@@ -63,11 +63,14 @@ export const generateInvoicePdf = async (invoiceId) => {
       }
       .invoice-container {
         max-width: 210mm;
+        min-height: 297mm;
         margin: 0 auto;
         padding: 40px;
         background: white;
         position: relative;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
       }
       .status-ribbon {
         position: absolute;
@@ -86,7 +89,7 @@ export const generateInvoicePdf = async (invoiceId) => {
         z-index: 10;
       }
       .status-ribbon.paid {
-        background: linear-gradient(135deg, #32cd32 0%, #28a745 100%);
+        background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
       }
       .status-ribbon.unpaid {
         background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
@@ -104,7 +107,7 @@ export const generateInvoicePdf = async (invoiceId) => {
         align-items: flex-start;
         margin-bottom: 35px;
         padding-bottom: 20px;
-        border-bottom: 3px solid #32cd32;
+        border-bottom: 3px solid #2563eb;
       }
       .header-left {
         flex: 0 0 auto;
@@ -152,7 +155,7 @@ export const generateInvoicePdf = async (invoiceId) => {
       .invoice-title {
         font-size: 64px;
         font-weight: 900;
-        color: #32cd32;
+        color: #2563eb;
         text-transform: uppercase;
         letter-spacing: 2px;
         margin-bottom: 12px;
@@ -167,6 +170,11 @@ export const generateInvoicePdf = async (invoiceId) => {
       .invoice-details p {
         margin: 4px 0;
         line-height: 1.5;
+      }
+      .invoice-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
       }
       .invoice-parties {
         display: flex;
@@ -213,11 +221,11 @@ export const generateInvoicePdf = async (invoiceId) => {
         color: white;
       }
       .invoice-table th.col-no {
-        background: #32cd32;
+        background: #2563eb;
         width: 60px;
       }
       .invoice-table th.col-desc {
-        background: #32cd32;
+        background: #2563eb;
       }
       .invoice-table th.col-price,
       .invoice-table th.col-qty,
@@ -270,7 +278,7 @@ export const generateInvoicePdf = async (invoiceId) => {
         color: #666;
       }
       .summary-total {
-        background: #32cd32;
+        background: #2563eb;
         color: white;
         padding: 20px;
         border-radius: 8px;
@@ -283,12 +291,13 @@ export const generateInvoicePdf = async (invoiceId) => {
       }
       .invoice-footer-info {
         margin-bottom: 15px;
+        margin-top: auto;
       }
       .footer-section {
         margin-bottom: 12px;
       }
       .footer-label {
-        color: #32cd32;
+        color: #2563eb;
         font-size: 14px;
         font-weight: 600;
         text-transform: uppercase;
@@ -312,7 +321,7 @@ export const generateInvoicePdf = async (invoiceId) => {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 15px;
+        margin-top: auto;
       }
       .contact-info {
         display: flex;
@@ -328,7 +337,7 @@ export const generateInvoicePdf = async (invoiceId) => {
       .contact-icon {
         width: 20px;
         height: 20px;
-        background: #32cd32;
+        background: #2563eb;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -347,17 +356,21 @@ export const generateInvoicePdf = async (invoiceId) => {
         .invoice-print-container { padding: 0; }
         .invoice-container { 
           max-width: 100%;
+          min-height: 297mm;
           padding: 20mm 25mm;
           margin: 0;
           page-break-inside: avoid;
+          display: flex;
+          flex-direction: column;
         }
         .print-button { display: none; }
         @page { margin: 0; size: A4; }
         .invoice-header { margin-bottom: 20px; padding-bottom: 15px; }
+        .invoice-content { flex: 1; display: flex; flex-direction: column; }
         .invoice-parties { margin-bottom: 18px; }
         .invoice-table { margin-bottom: 15px; }
         .invoice-summary { margin-bottom: 15px; }
-        .invoice-footer-info { margin-bottom: 12px; }
+        .invoice-footer-info { margin-bottom: 12px; margin-top: auto; }
         .invoice-contact-footer { margin-top: 10px; padding: 12px 25px; }
         .footer-section { margin-bottom: 8px; }
       }
@@ -384,7 +397,7 @@ export const generateInvoicePdf = async (invoiceId) => {
                 <div class="header-left">
                   <div class="company-logo-section">
                     <div class="company-logo">
-                      ${logoToUse ? `<img src="${logoToUse}" alt="${settings.name || company.name}" />` : `<div style="width: 80px; height: 80px; background: #32cd32; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 32px;">${(settings.name || company.name) ? (settings.name || company.name).charAt(0).toUpperCase() : 'C'}</div>`}
+                      ${logoToUse ? `<img src="${logoToUse}" alt="${settings.name || company.name}" />` : `<div style="width: 80px; height: 80px; background: #2563eb; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 32px;">${(settings.name || company.name) ? (settings.name || company.name).charAt(0).toUpperCase() : 'C'}</div>`}
                     </div>
                     ${settings.logo_tagline ? `<div class="company-tagline">${settings.logo_tagline}</div>` : ''}
                   </div>
@@ -399,11 +412,12 @@ export const generateInvoicePdf = async (invoiceId) => {
                 </div>
               </div>
               
+              <div class="invoice-content">
               <!-- Invoice To/From -->
               <div class="invoice-parties">
                 <div class="party-section">
                   <div class="party-label">Invoice To:</div>
-                  <div class="party-name">${client.name || 'N/A'}</div>
+                  <div class="party-name">${company.name || 'N/A'}</div>
                   <div class="party-details">
                     ${client.email ? `<div>Email: ${client.email}</div>` : ''}
                     ${client.phone ? `<div>Phone: ${client.phone}</div>` : ''}
@@ -485,6 +499,7 @@ export const generateInvoicePdf = async (invoiceId) => {
                 </div>
                 ` : ''}
               </div>
+              </div>
               
               <!-- Contact Footer -->
               <div class="invoice-contact-footer">
@@ -554,7 +569,7 @@ const InvoicePrint = ({ invoice, settings }) => {
                 {logoToUse ? (
                   <img src={logoToUse} alt={settings?.name || company?.name} />
                 ) : (
-                  <div style={{width: '80px', height: '80px', background: '#32cd32', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold', fontSize: '32px'}}>
+                  <div style={{width: '80px', height: '80px', background: '#2563eb', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold', fontSize: '32px'}}>
                     {(settings?.name || company?.name) ? (settings?.name || company?.name).charAt(0).toUpperCase() : 'C'}
                   </div>
                 )}
@@ -574,11 +589,12 @@ const InvoicePrint = ({ invoice, settings }) => {
           </div>
         </div>
         
+        <div className="invoice-content">
         {/* Invoice To/From */}
         <div className="invoice-parties">
           <div className="party-section">
             <div className="party-label">Invoice To:</div>
-            <div className="party-name">{client?.name || 'N/A'}</div>
+            <div className="party-name">{company?.name || 'N/A'}</div>
             <div className="party-details">
               {client?.email && <div>Email: {client.email}</div>}
               {client?.phone && <div>Phone: {client.phone}</div>}
@@ -659,6 +675,7 @@ const InvoicePrint = ({ invoice, settings }) => {
               <div className="footer-content">{settings.privacy_and_policy}</div>
             </div>
           )}
+        </div>
         </div>
         
         {/* Contact Footer */}
