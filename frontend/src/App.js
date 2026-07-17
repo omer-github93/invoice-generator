@@ -10,7 +10,7 @@ import CompanyForm from './pages/CompanyPage/CompanyForm';
 import ClientList from './pages/ClientPage/ClientList';
 import ClientForm from './pages/ClientPage/ClientForm';
 import Settings from './pages/SettingsPage/Settings';
-import AnalyticsDashboard from './pages/AnalyticsPage/AnalyticsDashboard';
+
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -120,14 +120,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/analytics"
-            element={
-              <ProtectedRoute>
-                <AnalyticsDashboard />
-              </ProtectedRoute>
-            }
-          />
+
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </Router>
