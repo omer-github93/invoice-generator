@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { companyService } from '../../services/api';
+import Navbar from '../../components/Navbar';
 import './CompanyForm.css';
 
 const CompanyForm = () => {
@@ -159,7 +160,9 @@ const CompanyForm = () => {
   }
 
   return (
-    <div className="company-form-container">
+    <>
+      <Navbar />
+      <div className="company-form-container">
       <div className="list-header">
         <div className="header-left">
           <button onClick={() => navigate('/companies')} className="back-button">
@@ -261,7 +264,8 @@ const CompanyForm = () => {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 };
 

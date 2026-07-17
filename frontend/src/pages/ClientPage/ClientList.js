@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { clientService } from '../../services/api';
 import ConfirmDialog from '../../components/ConfirmDialog';
+import Navbar from '../../components/Navbar';
 import './ClientList.css';
 
 const ClientList = () => {
@@ -134,7 +135,9 @@ const ClientList = () => {
   };
 
   return (
-    <div className="client-list-container">
+    <>
+      <Navbar />
+      <div className="client-list-container">
       {/* Beautiful Header */}
       <div className="list-header">
         <div className="header-left">
@@ -313,7 +316,8 @@ const ClientList = () => {
         title="Delete Client"
         message={`Are you sure you want to delete "${deleteDialog.name}"? This action cannot be undone.`}
       />
-    </div>
+      </div>
+    </>
   );
 };
 

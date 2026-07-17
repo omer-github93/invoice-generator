@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { clientService, companyService } from '../../services/api';
+import Navbar from '../../components/Navbar';
 import './ClientForm.css';
 
 const ClientForm = () => {
@@ -262,7 +263,9 @@ const ClientForm = () => {
   }
 
   return (
-    <div className="client-form-container">
+    <>
+      <Navbar />
+      <div className="client-form-container">
       <div className="list-header">
         <div className="header-left">
           <button onClick={() => navigate('/clients')} className="back-button">
@@ -454,7 +457,8 @@ const ClientForm = () => {
         </div>
       )}
     </div>
-  );
+  </>
+);
 };
 
 export default ClientForm;

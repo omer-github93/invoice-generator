@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { invoiceService } from '../../services/api';
 import { generateInvoicePdf } from './InvoicePrint';
+import Navbar from '../../components/Navbar';
 import './InvoiceList.css';
 
 const InvoiceList = () => {
@@ -126,7 +127,9 @@ const InvoiceList = () => {
   };
 
   return (
-    <div className="invoice-list-container">
+    <>
+      <Navbar />
+      <div className="invoice-list-container">
       {/* Beautiful Header */}
       <div className="list-header">
         <div className="header-left">
@@ -344,7 +347,8 @@ const InvoiceList = () => {
           </button>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 

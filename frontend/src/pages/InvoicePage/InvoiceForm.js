@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { invoiceService, companyService, clientService } from '../../services/api';
+import Navbar from '../../components/Navbar';
 import './InvoiceForm.css';
 
 const InvoiceForm = () => {
@@ -366,7 +367,9 @@ const InvoiceForm = () => {
   }
 
   return (
-    <div className="invoice-form-container">
+    <>
+      <Navbar />
+      <div className="invoice-form-container">
       <div className="list-header">
         <div className="header-left">
           <button onClick={() => navigate('/invoices')} className="back-button">
@@ -722,7 +725,8 @@ const InvoiceForm = () => {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 };
 

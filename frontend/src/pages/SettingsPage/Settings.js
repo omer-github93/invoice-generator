@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { settingService } from '../../services/api';
+import Navbar from '../../components/Navbar';
 import './Settings.css';
 
 const Settings = () => {
@@ -157,7 +158,9 @@ const Settings = () => {
   }
 
   return (
-    <div className="settings-container">
+    <>
+      <Navbar />
+      <div className="settings-container">
       <div className="list-header">
         <div className="header-left">
           <button onClick={() => navigate('/dashboard')} className="back-button">
@@ -325,7 +328,8 @@ const Settings = () => {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 };
 

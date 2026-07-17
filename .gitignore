@@ -27,3 +27,5 @@ GITHUB_SETUP.md
 README.md.backup
 *.backup
 
+# database backup
+db_backup_17-7-2026/
