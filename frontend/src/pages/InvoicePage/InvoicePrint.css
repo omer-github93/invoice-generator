@@ -18,11 +18,13 @@ body {
 
 .invoice-container {
   max-width: 210mm;
+  min-height: 297mm;
   margin: 0 auto;
   padding: 40px;
   background: white;
   position: relative;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .status-ribbon {
@@ -281,7 +283,11 @@ body {
 
 /* Payment and Terms Section */
 .invoice-footer-info {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  margin-top: auto;
+  page-break-inside: avoid;
+  page-break-after: avoid;
+  flex-shrink: 0;
 }
 
 .footer-section {
@@ -379,53 +385,56 @@ body {
     padding: 0;
     margin: 0;
   }
-  
+
   .invoice-print-container {
     padding: 0;
   }
-  
+
   .invoice-container {
     max-width: 100%;
-    padding: 20mm 25mm;
+    min-height: 297mm;
+    padding: 15mm 20mm;
     margin: 0;
     page-break-inside: avoid;
+    display: flex;
+    flex-direction: column;
   }
-  
+
   .print-button {
     display: none;
   }
-  
+
   @page {
     margin: 0;
     size: A4;
   }
-  
+
   .invoice-header {
     margin-bottom: 20px;
     padding-bottom: 15px;
   }
-  
+
   .invoice-parties {
     margin-bottom: 18px;
   }
-  
+
   .invoice-table {
     margin-bottom: 15px;
   }
-  
+
   .invoice-summary {
     margin-bottom: 15px;
   }
-  
+
   .invoice-footer-info {
     margin-bottom: 12px;
   }
-  
+
   .invoice-contact-footer {
     margin-top: 10px;
     padding: 12px 25px;
   }
-  
+
   .footer-section {
     margin-bottom: 8px;
   }

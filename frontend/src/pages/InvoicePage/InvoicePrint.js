@@ -25,17 +25,17 @@ export const generateInvoicePdf = async (invoiceId) => {
     ]);
     const company = invoice.company || {};
     const client = invoice.client || {};
-    
+
     // Use settings logo, or fallback to company logo
     const apiUrl = (process.env.REACT_APP_API_URL || 'http://localhost:8000/api').replace('/api', '');
-    const settingsLogo = settings.logo 
+    const settingsLogo = settings.logo
       ? `${apiUrl}/storage/${settings.logo}`
       : null;
-    const companyLogo = company.logo_path 
+    const companyLogo = company.logo_path
       ? `${apiUrl}/storage/${company.logo_path}`
       : null;
     const logoToUse = settingsLogo || companyLogo;
-    
+
     // Create a hidden iframe for printing
     const iframe = document.createElement('iframe');
     iframe.style.position = 'fixed';
@@ -45,9 +45,9 @@ export const generateInvoicePdf = async (invoiceId) => {
     iframe.style.height = '0';
     iframe.style.border = '0';
     document.body.appendChild(iframe);
-    
+
     const printWindow = iframe.contentWindow;
-    
+
     // Get CSS content from the CSS file (we'll embed it inline)
     const cssContent = `
       * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -64,12 +64,10 @@ export const generateInvoicePdf = async (invoiceId) => {
       .invoice-container {
         max-width: 210mm;
         min-height: 297mm;
-        max-height: 297mm;
         margin: 0 auto;
         padding: 40px;
         background: white;
         position: relative;
-        overflow: hidden;
         display: flex;
         flex-direction: column;
       }
@@ -292,10 +290,11 @@ export const generateInvoicePdf = async (invoiceId) => {
         font-weight: bold;
       }
       .invoice-footer-info {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
         margin-top: auto;
         page-break-inside: avoid;
         page-break-after: avoid;
+        flex-shrink: 0;
       }
       .footer-section {
         margin-bottom: 12px;
@@ -363,13 +362,11 @@ export const generateInvoicePdf = async (invoiceId) => {
         .invoice-container { 
           max-width: 100%;
           min-height: 297mm;
-          max-height: 297mm;
           padding: 15mm 20mm;
           margin: 0;
           page-break-inside: avoid;
           display: flex;
           flex-direction: column;
-          overflow: hidden;
         }
         .print-button { display: none; }
         @page { margin: 0; size: A4; }
@@ -393,13 +390,21 @@ export const generateInvoicePdf = async (invoiceId) => {
         .footer-section { margin-bottom: 6px; }
       }
     `;
-    
+
+    // Generate filename: CompanyName_InvoiceNumber
+    const companyName = (company.name || settings.name || 'Invoice').replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_');
+    const invoiceNumber = (invoice.invoice_number || 'N/A').replace(/[^a-z0-9]/gi, '_').replace(/_+/g, '_');
+    const filename = `${companyName}_${invoiceNumber}`;
+
+    // Set iframe name to help with filename suggestion
+    iframe.name = filename;
+
     printWindow.document.open();
     printWindow.document.write(`
       <!DOCTYPE html>
       <html>
         <head>
-          <title>Invoice ${invoice.invoice_number}</title>
+          <title>${filename}</title>
           <meta charset="UTF-8">
           <style>${cssContent}</style>
         </head>
@@ -542,9 +547,11 @@ export const generateInvoicePdf = async (invoiceId) => {
       </html>
     `);
     printWindow.document.close();
-    
+
     // Wait for content to load, then print
     setTimeout(() => {
+      // Set document title after content loads (helps some browsers)
+      printWindow.document.title = filename;
       printWindow.print();
       // Remove iframe after printing
       setTimeout(() => {
@@ -561,12 +568,12 @@ export const generateInvoicePdf = async (invoiceId) => {
 const InvoicePrint = ({ invoice, settings }) => {
   const company = invoice?.company || {};
   const client = invoice?.client || {};
-  
+
   const apiUrl = (process.env.REACT_APP_API_URL || 'http://localhost:8000/api').replace('/api', '');
-  const settingsLogo = settings?.logo 
+  const settingsLogo = settings?.logo
     ? `${apiUrl}/storage/${settings.logo}`
     : null;
-  const companyLogo = company?.logo_path 
+  const companyLogo = company?.logo_path
     ? `${apiUrl}/storage/${company.logo_path}`
     : null;
   const logoToUse = settingsLogo || companyLogo;
@@ -587,7 +594,7 @@ const InvoicePrint = ({ invoice, settings }) => {
                 {logoToUse ? (
                   <img src={logoToUse} alt={settings?.name || company?.name} />
                 ) : (
-                  <div style={{width: '150px', height: '150px', background: '#2563eb', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold', fontSize: '48px'}}>
+                  <div style={{ width: '150px', height: '150px', background: '#2563eb', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 'bold', fontSize: '48px' }}>
                     {(settings?.name || company?.name) ? (settings?.name || company?.name).charAt(0).toUpperCase() : 'C'}
                   </div>
                 )}
@@ -606,96 +613,96 @@ const InvoicePrint = ({ invoice, settings }) => {
             </div>
           </div>
         </div>
-        
+
         <div className="invoice-content">
-        {/* Invoice To/From */}
-        <div className="invoice-parties">
-          <div className="party-section">
-            <div className="party-label">Invoice To:</div>
-            <div className="party-name">{company?.name || 'N/A'}</div>
-            <div className="party-details">
-              {client?.email && <div>Email: {client.email}</div>}
-              {client?.phone && <div>Phone: {client.phone}</div>}
+          {/* Invoice To/From */}
+          <div className="invoice-parties">
+            <div className="party-section">
+              <div className="party-label">Invoice To:</div>
+              <div className="party-name">{company?.name || 'N/A'}</div>
+              <div className="party-details">
+                {client?.email && <div>Email: {client.email}</div>}
+                {client?.phone && <div>Phone: {client.phone}</div>}
+              </div>
             </div>
-          </div>
-          <div className="party-section">
-            <div className="party-label">Invoice From:</div>
-            <div className="party-name">{settings?.name || company?.name || 'N/A'}</div>
-            <div className="party-details">
-              {settings?.email && <div>Email: {settings.email}</div>}
-              {settings?.phone && <div>Phone: {settings.phone}</div>}
-              {settings?.address ? <div>{settings.address}</div> : (company?.address ? <div>{company.address}</div> : null)}
-            </div>
-          </div>
-        </div>
-        
-        {/* Items Table */}
-        <table className="invoice-table">
-          <thead>
-            <tr>
-              <th className="col-no">NO.</th>
-              <th className="col-desc">PRODUCT DESCRIPTION</th>
-              <th className="col-price">PRICE</th>
-              <th className="col-qty">QTY.</th>
-              <th className="col-total">TOTAL</th>
-            </tr>
-          </thead>
-          <tbody>
-            {invoice?.items?.map((item, index) => (
-              <tr key={index}>
-                <td className="col-no">{String(index + 1).padStart(2, '0')}</td>
-                <td className="col-desc">
-                  <div className="item-title">{item.description || 'N/A'}</div>
-                </td>
-                <td className="col-price">{formatCurrency(item.unit_price)}</td>
-                <td className="col-qty">{item.quantity}</td>
-                <td className="col-total">{formatCurrency(item.line_total)}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        
-        {/* Summary */}
-        <div className="invoice-summary">
-          <div className="summary-content">
-            <div className="summary-row">
-              <span>Subtotal:</span>
-              <span>{formatCurrency(invoice?.subtotal)}</span>
-            </div>
-            <div className="summary-row">
-              <span>Tax (0%):</span>
-              <span>{formatCurrency(invoice?.tax_amount || 0)}</span>
-            </div>
-            <div className="summary-total">
-              <div className="summary-row">
-                <span>Total:</span>
-                <span>{formatCurrency(invoice?.total)}</span>
+            <div className="party-section">
+              <div className="party-label">Invoice From:</div>
+              <div className="party-name">{settings?.name || company?.name || 'N/A'}</div>
+              <div className="party-details">
+                {settings?.email && <div>Email: {settings.email}</div>}
+                {settings?.phone && <div>Phone: {settings.phone}</div>}
+                {settings?.address ? <div>{settings.address}</div> : (company?.address ? <div>{company.address}</div> : null)}
               </div>
             </div>
           </div>
-        </div>
-        
-        {/* Payment Method & Terms */}
-        <div className="invoice-footer-info">
-          <div className="footer-section">
-            <div className="footer-label">Payment Method:</div>
-            <div className="payment-method">{invoice?.payment_terms || 'N/A'}</div>
+
+          {/* Items Table */}
+          <table className="invoice-table">
+            <thead>
+              <tr>
+                <th className="col-no">NO.</th>
+                <th className="col-desc">PRODUCT DESCRIPTION</th>
+                <th className="col-price">PRICE</th>
+                <th className="col-qty">QTY.</th>
+                <th className="col-total">TOTAL</th>
+              </tr>
+            </thead>
+            <tbody>
+              {invoice?.items?.map((item, index) => (
+                <tr key={index}>
+                  <td className="col-no">{String(index + 1).padStart(2, '0')}</td>
+                  <td className="col-desc">
+                    <div className="item-title">{item.description || 'N/A'}</div>
+                  </td>
+                  <td className="col-price">{formatCurrency(item.unit_price)}</td>
+                  <td className="col-qty">{item.quantity}</td>
+                  <td className="col-total">{formatCurrency(item.line_total)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Summary */}
+          <div className="invoice-summary">
+            <div className="summary-content">
+              <div className="summary-row">
+                <span>Subtotal:</span>
+                <span>{formatCurrency(invoice?.subtotal)}</span>
+              </div>
+              <div className="summary-row">
+                <span>Tax (0%):</span>
+                <span>{formatCurrency(invoice?.tax_amount || 0)}</span>
+              </div>
+              <div className="summary-total">
+                <div className="summary-row">
+                  <span>Total:</span>
+                  <span>{formatCurrency(invoice?.total)}</span>
+                </div>
+              </div>
+            </div>
           </div>
-          {invoice?.note && (
+
+          {/* Payment Method & Terms */}
+          <div className="invoice-footer-info">
             <div className="footer-section">
-              <div className="footer-label">Terms & Conditions:</div>
-              <div className="footer-content">{invoice.note}</div>
+              <div className="footer-label">Payment Method:</div>
+              <div className="payment-method">{invoice?.payment_terms || 'N/A'}</div>
             </div>
-          )}
-          {settings?.privacy_and_policy && (
-            <div className="footer-section">
-              <div className="footer-label">Privacy & Policy:</div>
-              <div className="footer-content">{settings.privacy_and_policy}</div>
-            </div>
-          )}
+            {invoice?.note && (
+              <div className="footer-section">
+                <div className="footer-label">Terms & Conditions:</div>
+                <div className="footer-content">{invoice.note}</div>
+              </div>
+            )}
+            {settings?.privacy_and_policy && (
+              <div className="footer-section">
+                <div className="footer-label">Privacy & Policy:</div>
+                <div className="footer-content">{settings.privacy_and_policy}</div>
+              </div>
+            )}
+          </div>
         </div>
-        </div>
-        
+
         {/* Contact Footer */}
         <div className="invoice-contact-footer">
           <div className="contact-info">
